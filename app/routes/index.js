@@ -10,8 +10,17 @@ class Index{
         this.app.get('/', 
             this.controller.index);
         
-        this.app.get('/index', 
+        this.app.get('/index/:id', 
             this.controller.index2);
+
+        this.app.post('/create', 
+            this.controller.create);
+
+        this.app.put('/update/:id', 
+            this.controller.update);
+        
+        this.app.delete('/delete/:id', 
+            this.controller.delete);
 
     }
 
