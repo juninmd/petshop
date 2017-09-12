@@ -1,91 +1,112 @@
 const connection = require("./index");
 
-var mongoose = connection.mongoose;
-var Schema = mongoose.Schema;
+class User {
 
-var UserSchema = new Schema({
+    constructor() {
+        this.mongoose = connection.mongoose;
+        this.user = this.createSchema();
+    }
 
-    name: {type: String, default: ""},
-    email: {type: String, default: "", unique: true},
-    password: {type: String, default: ""}
+    // Monta o schema de usuário
+    createSchema() {
+        var Schema = this.mongoose.Schema;
 
-});
+        let UserSchema = new Schema({
+            name: { type: String, default: "" },
+            email: { type: String, default: "", unique: true },
+            password: { type: String, default: "" },
+            created_at: { type: Date, default: new Date() },
+            updated_at: { type: Date, default: new Date() }
+        });
 
-var User = mongoose.model("User", UserSchema);
+        return this.mongoose.model("User", UserSchema);
+    }
 
-exports.list = function(req, res){
-    User.find()
-        .exec(function(err, users){
-            if( err ){
-                console.log(err);
-            }else{
+    // Lista todos os usuários
+    list(req, res) {
+        this.user
+            .find()
+            .exec((err, users) => {
+
+                if (err) {
+                    res.json(err);
+                }
+
                 res.json(users);
-            }
-        });
-}
 
-exports.get = function(req, res){
+            });
+    }
 
-    var id = req.params.id;
+    get(req, res) {
 
-    User.findOne({_id:id})
-        .exec(function(err, users){
-            if( err ){
-                console.log(err);
-                res.json(err);
-            }else{
+        let id = req.params.id;
+
+        this.user
+            .findOne({ _id: id })
+            .exec((err, users) => {
+                if (err) {
+                    res.json(err);
+                }
+
                 res.json(users);
-            }
-        });
+            });
+    }
+
+    create(req, res) {
+
+        let Usuario = this.user;
+        let data = req.body;
+
+        let dados = {
+            name: data.name,
+            email: data.email,
+            password: data.password,
+        };
+
+        let user = new Usuario(dados);
+
+        user
+            .save((err, data) => {
+                if (err) {
+                    res.json(err);
+                }
+
+                res.json(data);
+            });
+    }
+
+
+    // Responsavel pelo update da aplicação
+    update(req, res) {
+
+        let id = req.params.id;
+        let data = Object.assign({ updated_at: new Date() }, req.body);
+        console.log(data);
+
+        this.user
+            .update({ _id: id }, data, (err, data) => {
+                if (err) {
+                    res.json(err);
+                }
+
+                res.json(data);
+            });
+
+    }
+
+    delete(req, res) {
+        let id = req.params.id;
+
+        this.user
+            .remove({ _id: id }, (err, data) => {
+                if (err) {
+                    res.json(err);
+                }
+
+                res.json(data);
+            });
+    }
 
 }
 
-exports.create = function(req, res){
-
-    var data = req.body;
-
-    res.json(req.body);
-
-    var dados = {
-        name: data.name,
-        email: data.email,
-        password: data.password,
-    };
-
-    var user = new User(dados);
-    user.save(function(err, data){
-        if(err){
-            res.json(err);
-        }
-
-        res.json(data);
-    });
-
-}
-
-exports.update = function(req, res){
-
-        var id = req.params.id;
-        var data = req.body;
-
-        User.update({_id:id}, data, function(err, data){
-            if(err){
-                res.json(err);
-            }
-    
-            res.json(data);
-        });
-    
-}
-
-exports.delete = function(req, res){
-    var id = req.params.id;
-
-    User.remove({_id: id}, function(err, data){
-        if(err){
-            res.json(err);
-        }
-
-        res.json(data);
-    });
-}
+module.exports = new User()

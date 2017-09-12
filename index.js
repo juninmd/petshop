@@ -5,9 +5,10 @@ const bodyParser = require('body-parser');
 class Application{
 
     constructor(){
-        this.app = express();       
-        this.loader();
+        this.app = express();   
         this.use();
+            
+        this.loader();
         this.app.listen(3000, () => console.log('Carregou') );
     }
 

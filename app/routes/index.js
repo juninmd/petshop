@@ -7,19 +7,19 @@ class Index{
 
     routes(){
 
-        this.app.get('/', 
-            this.controller.index);
+        this.app.get('/user', 
+            this.controller.list);
         
-        this.app.get('/index/:id', 
-            this.controller.index2);
+        this.app.get('/user/:id', 
+            this.controller.get);
 
-        this.app.post('/create', 
+        this.app.post('/user', 
             this.controller.create);
 
-        this.app.put('/update/:id', 
+        this.app.put('/user/:id', 
             this.controller.update);
         
-        this.app.delete('/delete/:id', 
+        this.app.delete('/user/:id', 
             this.controller.delete);
 
     }

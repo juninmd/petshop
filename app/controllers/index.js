@@ -3,11 +3,11 @@ const UserModel = require('../models/user');
 class IndexController{
 
 
-    index(req, res){
+    list(req, res){
         UserModel.list(req, res);
     }
 
-    index2(req, res){
+    get(req, res){
         UserModel.get(req, res);
     }
 
