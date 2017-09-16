@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+// mongoose.createConnection("mongodb://localhost/petshop");
 mongoose.connect("mongodb://localhost/petshop");
 
 var db = mongoose.connection;

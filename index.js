@@ -2,33 +2,18 @@ const express = require('express');
 const consign = require('consign');
 const bodyParser = require('body-parser');
 
-class Application{
+const app = express();
 
-    constructor(){
-        this.app = express();   
-        this.use();
-            
-        this.loader();
-        this.app.listen(3000, () => console.log('Carregou') );
-    }
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }));
 
-    loader(){
-        consign({ cwd : 'app' })
-            .include('models')
-            .then('controllers')
-            .then('routes')
-            .into(this.app);
-    }
+consign({ cwd : 'app' })
+    .include('models')
+    .then('controllers')
+    .into(app);
 
-    use(){
+app.listen(3000, () => {
+    console.log('Carregou')
+})
 
-        this.app.use(bodyParser.json())
-        this.app.use(bodyParser.urlencoded({ extended: false }));
-
-    }
-
-}
-
-const server = new Application()
-
-module.exports = server.app;
+module.exports = app;
