@@ -1,16 +1,9 @@
 const mongoose = require('mongoose');
 
 // mongoose.createConnection("mongodb://localhost/petshop");
-mongoose.connect("mongodb://localhost/petshop");
-
-var db = mongoose.connection;
-
-db.on("error", (err) => {
-    console.log("Erro durante a conexão: ", err);
-});
-
-db.once("open", () => {
-    console.log("conexão realizada com sucesso");
-});
+mongoose.Promise = global.Promise;
+mongoose.connection.openUri("mongodb://localhost/petshop")
+        .then( () => console.log('conexão realizada com sucesso') )
+        .catch( err => console.log(`erro na conexão: ${err}`) );
 
 exports.mongoose = mongoose;

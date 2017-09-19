@@ -1,38 +1,40 @@
 const mongoose = require("mongoose");
+const bcrypt = require('bcrypt-nodejs');
 
-class User {
+class Animal{
 
     constructor() {
         this.mongoose = mongoose;
-        this.user = this.createSchema();
+        this.animal = this.createSchema();
     }
 
     // Monta o schema de usuário
     createSchema() {
         var Schema = this.mongoose.Schema;
 
-        let UserSchema = new Schema({
-            name: { type: String, default: "" },
-            email: { type: String, default: "", unique: true },
-            password: { type: String, default: "" },
-            created_at: { type: Date, default: new Date() },
-            updated_at: { type: Date, default: new Date() }
+        let AnimalSchema = new Schema({
+            clienteId: { type: String },
+            nome: { type: String, default: "" },
+            idade: { type: Number, default: 0 },        
+            tamanho: { type: Number, default: 0 },          
+            raca: { type: String, default: "" },          
+            especie: { type: String, default: "" },
         });
 
-        return this.mongoose.model("User", UserSchema);
+        return this.mongoose.model("Animal", AnimalSchema);
     }
 
     // Lista todos os usuários
     list(req, res) {
-        this.user
+        this.animal
             .find()
-            .exec((err, users) => {
+            .exec((err, animais) => {
 
                 if (err) {
                     res.json(err);
                 }
 
-                res.json(users);
+                res.json(animais);
 
             });
     }
@@ -41,31 +43,34 @@ class User {
 
         let id = req.params.id;
 
-        this.user
+        this.animal
             .findOne({ _id: id })
-            .exec((err, users) => {
+            .exec((err, animais) => {
                 if (err) {
                     res.json(err);
                 }
 
-                res.json(users);
+                res.json(animais);
             });
     }
 
     create(req, res) {
 
-        let Usuario = this.user;
+        let Animal = this.animal;
         let data = req.body;
 
         let dados = {
-            name: data.name,
-            email: data.email,
-            password: data.password,
+            clienteId: data.clienteId,
+            nome: data.nome,
+            idade: data.idade,            
+            tamanho: data.tamanho,            
+            raca: data.raca,            
+            especie: data.especie       
         };
 
-        let user = new Usuario(dados);
+        let animal = new Animal(dados);
 
-        user
+        animal
             .save((err, data) => {
                 if (err) {
                     res.json(err);
@@ -80,10 +85,9 @@ class User {
     update(req, res) {
 
         let id = req.params.id;
-        let data = Object.assign({ updated_at: new Date() }, req.body);
-        console.log(data);
+        let data = req.body;
 
-        this.user
+        this.animal
             .update({ _id: id }, data, (err, data) => {
                 if (err) {
                     res.json(err);
@@ -97,7 +101,7 @@ class User {
     delete(req, res) {
         let id = req.params.id;
 
-        this.user
+        this.animal
             .remove({ _id: id }, (err, data) => {
                 if (err) {
                     res.json(err);
@@ -109,4 +113,4 @@ class User {
 
 }
 
-module.exports = new User()
+module.exports = new Animal();

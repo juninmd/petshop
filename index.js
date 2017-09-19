@@ -7,8 +7,9 @@ const app = express();
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }));
 
-consign({ cwd : 'app' })
-    .include('models')
+consign({ cwd: 'app' })
+    .include('models/index.js')
+    .then('models')
     .then('controllers')
     .into(app);
 

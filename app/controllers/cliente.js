@@ -27,25 +27,4 @@ module.exports = (app) => {
         ClienteModel.delete(req, res);
     });
 
-    /** Listagem de animais */
-    app.get('/cliente/:id/animais', (req, res, next) => {
-        ClienteModel.getAnimais(req, res);
-    });
-
-    /** Lista de animal */
-    app.get('/cliente/:id/animais/:animais', (req, res, next) => {
-        ClienteModel.getAnimal(req, res);
-    });
-
-    app.put('/cliente/:id/animais', (req, res, next) => {
-        ClienteModel.createAnimal(req, res);
-    });
-
-    app.put('/cliente/:id/animais/:animais', (req, res, next) => {
-        ClienteModel.editAnimal(req, res);
-    });
-
-    app.delete('/cliente/:id/animais/:animais', (req, res, next) => {
-        ClienteModel.deleteAnimal(req, res);
-    });
 }

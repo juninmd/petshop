@@ -1,38 +1,37 @@
 const mongoose = require("mongoose");
+const bcrypt = require('bcrypt-nodejs');
 
-class User {
+class Planos {
 
     constructor() {
         this.mongoose = mongoose;
-        this.user = this.createSchema();
+        this.planos = this.createSchema();
     }
 
     // Monta o schema de usuário
     createSchema() {
         var Schema = this.mongoose.Schema;
 
-        let UserSchema = new Schema({
-            name: { type: String, default: "" },
-            email: { type: String, default: "", unique: true },
-            password: { type: String, default: "" },
-            created_at: { type: Date, default: new Date() },
-            updated_at: { type: Date, default: new Date() }
+        let PlanosSchema = new Schema({
+            nome: { type: String, default: "" },
+            quantidade: { type: Number, default: 0 },
+            valor: { type: Number, default: 0 }
         });
 
-        return this.mongoose.model("User", UserSchema);
+        return this.mongoose.model("Planos", PlanosSchema);
     }
 
     // Lista todos os usuários
     list(req, res) {
-        this.user
+        this.planos
             .find()
-            .exec((err, users) => {
+            .exec((err, planoss) => {
 
                 if (err) {
                     res.json(err);
                 }
 
-                res.json(users);
+                res.json(planoss);
 
             });
     }
@@ -41,31 +40,31 @@ class User {
 
         let id = req.params.id;
 
-        this.user
+        this.planos
             .findOne({ _id: id })
-            .exec((err, users) => {
+            .exec((err, planoss) => {
                 if (err) {
                     res.json(err);
                 }
 
-                res.json(users);
+                res.json(planoss);
             });
     }
 
     create(req, res) {
 
-        let Usuario = this.user;
+        let Planos = this.planos;
         let data = req.body;
 
         let dados = {
-            name: data.name,
-            email: data.email,
-            password: data.password,
+            nome: data.nome,
+            quantidade: data.quantidade,            
+            valor: data.valor       
         };
 
-        let user = new Usuario(dados);
+        let planos = new Planos(dados);
 
-        user
+        planos
             .save((err, data) => {
                 if (err) {
                     res.json(err);
@@ -80,10 +79,9 @@ class User {
     update(req, res) {
 
         let id = req.params.id;
-        let data = Object.assign({ updated_at: new Date() }, req.body);
-        console.log(data);
+        let data = req.body;
 
-        this.user
+        this.planos
             .update({ _id: id }, data, (err, data) => {
                 if (err) {
                     res.json(err);
@@ -97,7 +95,7 @@ class User {
     delete(req, res) {
         let id = req.params.id;
 
-        this.user
+        this.planos
             .remove({ _id: id }, (err, data) => {
                 if (err) {
                     res.json(err);
@@ -109,4 +107,4 @@ class User {
 
 }
 
-module.exports = new User()
+module.exports = new Planos()
