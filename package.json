@@ -13,7 +13,8 @@
     "express": "^4.15.4",
     "express-validator": "^3.2.1",
     "loadash": "^1.0.0",
-    "mongoose": "^4.11.8"
+    "mongoose": "^4.11.8",
+    "nodemon": "^1.12.1"
   },
   "author": "",
   "license": "ISC"

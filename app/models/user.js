@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const gerarSenha = require('../service/encriptar')
 
 class User {
 
@@ -56,6 +57,12 @@ class User {
 
         let Usuario = this.user;
         let data = req.body;
+        
+        let senha = gerarSenha
+                        .getPassword(data.password)
+                        .then( res => res.message)
+        
+        res.json( senha );
 
         let dados = {
             name: data.name,
